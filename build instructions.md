@@ -24,7 +24,7 @@ version="0.8.2"
 handbrake_build_tag="1.11.2"
 
 podman build \
-  --pull=never \
+  --pull-always \
   --build-arg HANDBRAKE_BUILD_TAG="${handbrake_build_tag}" \
   --tag "${registry}/handbrake-web-server:${version}" \
   --tag "${registry}/handbrake-web-server:latest" \
@@ -32,7 +32,7 @@ podman build \
   .
 
 podman build \
-  --pull=never \
+  --pull=always \
   --build-arg HANDBRAKE_BUILD_TAG="${handbrake_build_tag}" \
   --tag "${registry}/handbrake-web-worker:${version}" \
   --tag "${registry}/handbrake-web-worker:latest" \
