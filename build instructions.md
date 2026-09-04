@@ -33,9 +33,6 @@ podman build \
 Push them to the local registry. A registry created with `registry:2` has no TLS by default, so include `--tls-verify=false`:
 
 ```bash
-registry="localhost:5000"
-version="0.8.2"
-
 podman push --tls-verify=false "${registry}/handbrake-web-server:${version}"
 podman push --tls-verify=false "${registry}/handbrake-web-server:latest"
 podman push --tls-verify=false "${registry}/handbrake-web-worker:${version}"
