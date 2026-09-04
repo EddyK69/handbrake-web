@@ -39,10 +39,13 @@ podman build `
 
 Push them to the local registry. A registry created with registry:2 has no TLS by default, so include --tls-verify=false:
 ```
-podman images | Select-String "handbrake-web"
+$registry = "localhost:5000"
+$version = "0.8.2"
 
-podman pull --tls-verify=false localhost:5000/handbrake-web-server:0.8.2
-podman pull --tls-verify=false localhost:5000/handbrake-web-worker:0.8.2
+podman push --tls-verify=false "$registry/handbrake-web-server:$version"
+podman push --tls-verify=false "$registry/handbrake-web-server:latest"
+podman push --tls-verify=false "$registry/handbrake-web-worker:$version"
+podman push --tls-verify=false "$registry/handbrake-web-worker:latest"
 ```
 
 Update compose.base.yaml to reference your registry:
