@@ -6,26 +6,16 @@ git switch mqtt
 podman machine start
 ```
 
-If you do not already have a local registry, start one on port 5000:
-```bash
-
-podman run -d \
-  --name local-registry \
-  --restart unless-stopped \
-  -p 5000:5000 \
-  docker.io/library/registry:2
-```
-
 Build both images from the repository root. The root context is required because the Dockerfiles copy files from client, shared, and the workspace root. This assumes `localhost:5000/handbrake-build:1.11.2` was built and pushed first.
 
 ```bash
 registry="localhost:5000"
 version="0.8.2"
-handbrake_build_tag="1.11.2"
+handbrake_version="1.11.2"
 
 podman build \
   --pull-always \
-  --build-arg HANDBRAKE_BUILD_TAG="${handbrake_build_tag}" \
+  --build-arg handbrake_version="${handbrake_version}" \
   --tag "${registry}/handbrake-web-server:${version}" \
   --tag "${registry}/handbrake-web-server:latest" \
   --file server/Dockerfile \
@@ -33,7 +23,7 @@ podman build \
 
 podman build \
   --pull=always \
-  --build-arg HANDBRAKE_BUILD_TAG="${handbrake_build_tag}" \
+  --build-arg handbrake_version="${handbrake_version}" \
   --tag "${registry}/handbrake-web-worker:${version}" \
   --tag "${registry}/handbrake-web-worker:latest" \
   --file worker/Dockerfile \
