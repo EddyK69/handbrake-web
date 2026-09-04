@@ -10,12 +10,13 @@ import path from 'path';
 import { getDataPath } from 'scripts/data';
 import { parse, stringify } from 'yaml';
 import { EmitToAllClients } from '../connections';
+import { HandleMqttConfigUpdate } from '../mqtt';
 import { RunMigrations } from './utilities/migrator';
 
 // Defines the latest config schema and default values
 const defaultConfig: ConfigType = {
 	config: {
-		version: 2,
+		version: 3,
 	},
 	paths: {
 		'media-path': '/video',
@@ -29,6 +30,16 @@ const defaultConfig: ConfigType = {
 	application: {
 		'queue-startup-behavior': QueueStartupBehavior.Previous,
 		'update-check-interval': 12,
+	},
+	mqtt: {
+		enabled: false,
+		host: '',
+		port: 1883,
+		username: '',
+		password: '',
+		'base-topic': 'handbrake-web',
+		'discovery-enabled': true,
+		'discovery-prefix': 'homeassistant',
 	},
 };
 
@@ -71,6 +82,7 @@ export async function LoadConfig() {
 		config = configFile;
 
 		EmitToAllClients('config-update', config);
+		await HandleMqttConfigUpdate(config);
 		logger.info(`[server] [config] The config file at '${configFilePath}' has been loaded.`);
 	} catch (error) {
 		logger.error(
@@ -89,6 +101,7 @@ export async function WriteConfig(newConfig: ConfigType) {
 		config = newConfig;
 
 		EmitToAllClients('config-update', newConfig);
+		await HandleMqttConfigUpdate(newConfig);
 		logger.info(`[server] [config] The config file at '${configFilePath}' has been written.`);
 	} catch (error) {
 		logger.error(`[server] [config] [error] Could not write new config to file.`);

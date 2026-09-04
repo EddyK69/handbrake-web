@@ -27,6 +27,7 @@ import {
 } from './database/database-queue';
 import { DatabaseSelectStatusByID, DatabaseUpdateStatus } from './database/database-status';
 import { GetDefaultPresetByName, GetPresetByName } from './presets';
+import { PublishQueueState } from './mqtt';
 import { GetWorkerProperties } from './properties';
 
 const getJobRequiredCapability: (
@@ -86,6 +87,7 @@ export async function InitializeQueue() {
 		}
 	});
 	EmitToAllClients('queue-update', queue);
+	PublishQueueState();
 }
 
 export async function GetBusyWorkers() {
@@ -239,6 +241,7 @@ export async function GetQueueStatus() {
 export function SetQueueStatus(newState: QueueStatus) {
 	DatabaseUpdateStatus('queue', newState);
 	EmitToAllClients('queue-status-update', newState);
+	PublishQueueState();
 }
 
 export async function StartQueue(clientID?: string) {
@@ -318,6 +321,7 @@ export async function UpdateQueue() {
 	const updatedQueue = await DatabaseGetDetailedJobs();
 	if (updatedQueue) {
 		EmitToAllClients('queue-update', updatedQueue);
+		PublishQueueState();
 	}
 }
 

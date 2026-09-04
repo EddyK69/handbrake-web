@@ -63,7 +63,7 @@ export async function CheckForVersionUpdate() {
 		logger.info(`[version] Checking if there is an application update...`);
 
 		const latestReleaseURL =
-			'https://api.github.com/repos/thenickoftime/handbrake-web/releases/latest';
+			'https://api.github.com/repos/EddyK69/handbrake-web/releases/latest';
 
 		// Fetch latest release information, timeout occurs after 5 seconds
 		const abortController = new AbortController();
@@ -135,7 +135,7 @@ export async function GetCurrentReleaseInfo() {
 	}
 
 	try {
-		const currentReleaseURL = `https://api.github.com/repos/thenickoftime/handbrake-web/releases/tags/${currentVersion}`;
+		const currentReleaseURL = `https://api.github.com/repos/EddyK69/handbrake-web/releases/tags/${currentVersion}`;
 
 		const abortController = new AbortController();
 		const timeout = setTimeout(() => abortController.abort(), 5000);

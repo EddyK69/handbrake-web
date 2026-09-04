@@ -1,6 +1,6 @@
 {
   "name": "@handbrake-web/client",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "HandBrake Web Client",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.goodforyou.games/ncunningham/handbrake-web.git"
+    "url": "https://github.com/EddyK69/handbrake-web.git"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

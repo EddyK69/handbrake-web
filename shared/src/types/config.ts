@@ -17,6 +17,16 @@ export interface ConfigType extends UnknownConfigType {
 		'queue-startup-behavior': QueueStartupBehavior;
 		'update-check-interval': number;
 	};
+	mqtt: {
+		enabled: boolean;
+		host: string;
+		port: number;
+		username: string;
+		password: string;
+		'base-topic': string;
+		'discovery-enabled': boolean;
+		'discovery-prefix': string;
+	};
 }
 
 // Config property enums ---------------------------------------------------------------------------
