@@ -1,8 +1,8 @@
 ARG DISTROLESS_VARIANT=debug-nonroot
-ARG HANDBRAKE_BUILD_TAG=latest
+ARG HANDBRAKE_BUILD_TAG=1.11.2
 
 # HandBrake Build ----------------------------------------------------------------------------------
-FROM ghcr.io/thenickoftime/handbrake-build:${HANDBRAKE_BUILD_TAG} AS handbrake-build
+FROM localhost:5000/handbrake-build:${HANDBRAKE_BUILD_TAG} AS handbrake-build
 
 # Build client -------------------------------------------------------------------------------------
 FROM node:24-trixie-slim AS client-build

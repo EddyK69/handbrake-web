@@ -1,7 +1,7 @@
 ARG DISTROLESS_VARIANT=debug-nonroot
-ARG HANDBRAKE_BUILD_TAG=latest
+ARG HANDBRAKE_BUILD_TAG=1.11.2
 
-FROM ghcr.io/thenickoftime/handbrake-build:${HANDBRAKE_BUILD_TAG} AS handbrake-build
+FROM localhost:5000/handbrake-build:${HANDBRAKE_BUILD_TAG} AS handbrake-build
 
 # Final image --------------------------------------------------------------------------------------
 FROM gcr.io/distroless/base-debian13:${DISTROLESS_VARIANT} AS main

@@ -1,5 +1,5 @@
 # HandBrake Build ----------------------------------------------------------------------------------
-FROM ghcr.io/thenickoftime/handbrake-build:latest AS handbrake-build
+FROM localhost:5000/handbrake-build:1.11.2 AS handbrake-build
 
 # Configure Dev Container Image --------------------------------------------------------------------
 FROM mcr.microsoft.com/vscode/devcontainers/base:trixie as main
