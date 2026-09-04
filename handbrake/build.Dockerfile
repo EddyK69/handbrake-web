@@ -15,6 +15,9 @@ ARG TARGETARCH
 # renovate: datasource=github-releases depName=HandBrake packageName=HandBrake/HandBrake
 ARG HANDBRAKE_VERSION=1.11.2
 
+# renovate: datasource=github-releases depName=cargo-c packageName=lu-zero/cargo-c
+ARG CARGO_C_VERSION=0.10.25
+
 # Configure APT
 RUN sed -i -e's/ main/ main contrib non-free non-free-firmware/g' \/etc/apt/sources.list.d/debian.sources
 RUN apt-get update
@@ -30,6 +33,7 @@ RUN apt-get install -y \
 	autoconf \
 	automake \
 	build-essential \
+	cargo \
 	clang \
 	cmake \
 	libass-dev \
@@ -65,6 +69,16 @@ RUN apt-get install -y \
 	pkg-config \
 	zlib1g-dev
 
+# Install cargo-c from its official release. Debian Trixie's cargo-c 0.10.11
+# does not enable libdovi's cargo_c C API configuration on ARM64.
+RUN case "$TARGETARCH" in \
+	amd64) cargo_c_target=x86_64-unknown-linux-musl ;; \
+	arm64) cargo_c_target=aarch64-unknown-linux-musl ;; \
+	*) echo "Unsupported architecture: $TARGETARCH" >&2; exit 1 ;; \
+	esac && \
+	curl -fsSL "https://github.com/lu-zero/cargo-c/releases/download/v${CARGO_C_VERSION}/cargo-c-${cargo_c_target}.tar.gz" | \
+	tar -xz -C /usr/local/bin
+
 # Install Intel QSV dependencies
 RUN if [ $TARGETARCH = "amd64" ]; \
 	then \
@@ -85,13 +99,6 @@ RUN if [ $TARGETARCH = "amd64" ]; \
 			nvidia-cuda-dev \
 			nvidia-cuda-toolkit \
 	; fi
-
-# Install lidovi dependencies
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
-	chmod +x "$HOME/.cargo/env" && \
-	."$HOME/.cargo/env"
-ENV PATH="/root/.cargo/bin:$PATH"
-RUN cargo install cargo-c
 
 # Clone the HandBrake git repo, checkout the specified version
 RUN mkdir /handbrake
